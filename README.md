@@ -1,6 +1,6 @@
 # RCONLink
 
-一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft 及 Source 引擎游戏（如 Left 4 Dead 2、CS:GO 等）。
+一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft。
 
 ## 功能
 
@@ -34,13 +34,7 @@ rcon.password=你的密码
 rcon.port=25575
 ```
 
-**Left 4 Dead 2**：在 `server.cfg` 中设置：
 
-```
-rcon_password "你的密码"
-```
-
-> 注意：L4D2 的 RCON 端口默认与游戏端口相同（通常为 `27015`）。
 
 ### 2. 运行脚本
 
@@ -122,5 +116,6 @@ pyinstaller --onefile --console --icon=icon.ico --version-file=version_info.txt 
 ## 作者
 
 QQ：1794499532
+邮箱： 1794499532@qq.com
 
 欢迎传播、二次开发，但请保留原作者信息。
