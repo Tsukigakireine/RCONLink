@@ -86,18 +86,6 @@ pyinstaller --onefile --console --icon=icon.ico --version-file=version_info.txt 
 | `op 玩家名` | 给予管理员权限 |
 | `gamemode 模式 玩家名` | 切换游戏模式 |
 
-### Left 4 Dead 2 / Source 引擎
-
-| 命令 | 说明 |
-|------|------|
-| `status` | 查看服务器和玩家信息 |
-| `changelevel 地图名` | 切换地图 |
-| `kick 玩家名` | 踢出玩家 |
-| `banid 0 玩家ID` | 封禁玩家 |
-| `say 消息` | 广播消息 |
-| `sv_cheats 1` | 开启作弊（仅管理员） |
-| `mp_gamemode versus` | 切换为对抗模式 |
-
 ## 许可证
 
 本项目采用 MIT 许可证，详见 [LICENSE](LICENSE)。
