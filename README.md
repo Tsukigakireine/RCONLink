@@ -1,109 +1,165 @@
 # RCONLink
 
-一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft。
+> 一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft 及 Source 引擎游戏（如 Left 4 Dead 2、CS:GO、Team Fortress 2 等）。
 
-## 功能
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 
-- 通过 RCON 协议远程连接游戏服务器
-- 发送任意指令（如 `list`、`say`、`status`、`changelevel` 等）
-- 方向键翻阅命令历史（当前会话有效）
-- 连通性自动测试
-- 支持自定义图标和版本信息的 EXE 打包
+---
 
-## 依赖
+## 📖 目录
 
-- Python 3.x
-- [mcrcon](https://pypi.org/project/mcrcon/)（RCON 协议客户端库）
-- (Windows 用户) [pyreadline3](https://pypi.org/project/pyreadline3/)（方向键历史记录支持）
+- [功能特性](#功能特性)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [使用方式](#使用方式)
+- [许可证](#许可证)
+- [第三方组件](#第三方组件)
+- [致谢](#致谢)
+- [作者](#作者)
 
-安装所有依赖：
+---
+
+## ✨ 功能特性
+
+- **多游戏支持** — 兼容 Minecraft、Source 及 BattlEye 引擎系列游戏（L4D2、CS:GO、TF2 等）
+- **交互式终端** — 类 REPL 的命令行交互体验，在 `>>>` 提示符后直接输入指令
+- **命令历史** — 方向键（↑/↓）翻阅历史命令，当前会话内有效
+- **连通性检测** — 连接前自动测试服务器可达性，快速定位问题
+
+---
+
+## 🔧 环境要求
+
+- **操作系统**：Windows
+- **Python**：>= 3.10（因核心依赖 `rcon` 模块要求）
+- **网络**：能访问目标服务器的 RCON 端口（TCP）
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装依赖(使用打包好的exe可跳过)
 
 ```bash
-pip install mcrcon pyreadline3
+pip install rcon
+pip install mcrcon
+pip install pyreadline3  # 仅 Windows 需要，提供方向键历史记录功能
 ```
 
-## 使用方法
+> 💡 也可直接安装 `requirements.txt` 中锁定的版本。
 
-### 1. 开启服务器 RCON
+### 2. 开启服务器 RCON
 
-**Minecraft**：在 `server.properties` 中设置：
+#### Minecraft
 
-```
+编辑 `server.properties`：
+
+```properties
 enable-rcon=true
 rcon.password=你的密码
-rcon.port=25575
+rcon.port=你的端口
 ```
 
+#### Left 4 Dead 2 / Source 引擎游戏
 
+编辑 `server.cfg`（或启动参数）：
 
-### 2. 运行脚本
-
-```bash
-python RCONLink.py
+```cfg
+rcon_password "你的密码"
+rcon_address "0.0.0.0:27015"  // 可选，绑定地址
 ```
 
-### 3. 按提示操作
+> ⚠️ **安全提示**：RCON 密码请使用强密码
 
-- 输入服务器 IP
-- 输入 RCON 端口
-- 输入 RCON 密码
-- 连接成功后，在 `>>>` 提示符后输入指令即可
+### 3. 下载 EXE 版本
 
-### 4. 退出
+前往 [Releases](https://github.com/Tsukigakireine/RCONLink/releases) 页面下载最新打包好的 EXE 文件，双击即可运行，无需安装 Python。
 
-输入 `leave` 即可退出程序。
+---
 
-## 打包为 EXE
+## 🖥️ 使用方式
 
-如需分发给不会 Python 的用户，可使用 PyInstaller 打包：
+### 交互式命令
 
-```bash
-pip install pyinstaller
-pyinstaller --onefile --console --icon=icon.ico --version-file=version_info.txt RCONLink.py
+成功连接后，终端显示 `>>>` 提示符，直接输入服务器支持的 RCON 命令即可：
+
+```text
+>>> status
+>>> say 服务器将于5分钟后重启
+>>> kick Steve
 ```
 
-打包完成后，EXE 文件位于 `dist/` 文件夹中。
+### 命令历史
 
-### 自定义图标
+- **↑（上方向键）**：翻阅上一条命令
+- **↓（下方向键）**：翻阅下一条命令
 
-将图标文件命名为 `icon.ico`，放在脚本同一目录下，打包时通过 `--icon=icon.ico` 指定即可。
+> 注意：历史记录仅在当前会话内有效，关闭程序后不保留。
 
-### 自定义版本信息
+---
 
-创建 `version_info.txt` 文件，内容参考 PyInstaller 官方文档的版本信息模板，打包时通过 `--version-file=version_info.txt` 指定。
+## 📄 许可证
 
-## 常用 RCON 命令参考
+本项目采用 [GNU 通用公共许可证 v3.0](LICENSE)，详见 [LICENSE](LICENSE) 文件。
 
-### Minecraft
+```text
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
 
-| 命令 | 说明 |
-|------|------|
-| `list` | 查看在线玩家 |
-| `say 消息` | 广播消息 |
-| `stop` | 关闭服务器 |
-| `kick 玩家名` | 踢出玩家 |
-| `ban 玩家名` | 封禁玩家 |
-| `op 玩家名` | 给予管理员权限 |
-| `gamemode 模式 玩家名` | 切换游戏模式 |
+Copyright (c) 2026 Tsukigakireine
 
-## 许可证
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-本项目采用 MIT 许可证，详见 [LICENSE](LICENSE)。
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-## 第三方组件
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
 
-| 组件 | 许可证 | 来源 |
-|------|--------|------|
-| [mcrcon](https://pypi.org/project/mcrcon/) | MIT | https://pypi.org/project/mcrcon/ |
-| [pyreadline3](https://pypi.org/project/pyreadline3/) | BSD | https://pypi.org/project/pyreadline3/ |
+---
 
-## 致谢
+## 📦 第三方组件
 
-感谢 mcrcon、pyreadline3 等开源项目的作者。
+| 组件 | 版本 | 许可证 | 来源 |
+|------|------|--------|------|
+| [rcon](https://pypi.org/project/rcon/) | >= 2.4.9 | GPLv3 | https://pypi.org/project/rcon/ |
+| [mcrcon](https://pypi.org/project/mcrcon/) | 最新 | MIT | https://pypi.org/project/mcrcon/ |
+| [pyreadline3](https://pypi.org/project/pyreadline3/) | 最新 | BSD | https://pypi.org/project/pyreadline3/ |
 
-## 作者
+### 依赖说明
 
-QQ：1794499532
-邮箱： 1794499532@qq.com
+- **rcon** — 核心 RCON 客户端库，提供 Source RCON 和 BattlEye RCon 协议支持，许可证与本项目一致（GPLv3）
+- **mcrcon** — 备选/兼容用 RCON 库，MIT 许可证，与 GPLv3 兼容
+- **pyreadline3** — 仅 Windows 平台需要，提供交互式命令行体验（方向键历史、行编辑），BSD 3-Clause 许可证
 
-欢迎传播、二次开发，但请保留原作者信息。
+详细许可证文本请参见 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)。
+
+---
+
+## 🙏 致谢
+
+感谢以下开源项目的作者和贡献者：
+
+- **[rcon](https://github.com/conqp/rcon)** — Richard Neumann 开发的 RCON 协议库（GPLv3）
+- **[mcrcon](https://github.com/Tiiffi/mcrcon)** — Tiiffi 等人开发的 RCON 协议库（MIT）
+- **[pyreadline3](https://github.com/pyreadline3/pyreadline3)** — Windows 下 Python 交互式输入支持（BSD）
+
+---
+
+## 👤 作者
+
+**Tsukigakireine**
+
+- GitHub：[@Tsukigakireine](https://github.com/Tsukigakireine)
+- 联系方式：QQ 1794499532
+- 邮箱: 1794499532@qq.com
+
+---
+
+> 💡 **提示**：如果你遇到问题或有功能建议，欢迎提交 [Issue](https://github.com/Tsukigakireine/RCONLink/issues) 或 Pull Request！
