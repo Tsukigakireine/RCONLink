@@ -32,7 +32,6 @@ pip install mcrcon
 pip install pyreadline3  # 仅 Windows 需要，提供方向键历史记录功能
 ```
 
-> 💡 也可直接安装 `requirements.txt` 中锁定的版本。
 
 ### 2. 开启服务器 RCON
 
