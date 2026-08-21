@@ -1,30 +1,19 @@
 # RCONLink
 
-> 一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft 及 Source 引擎游戏（如 Left 4 Dead 2、CS:GO、Team Fortress 2 等）。
+> 一个轻量级的游戏服务器 RCON 远程控制终端，支持 Minecraft、Source 引擎及 BattlEye 系列游戏。
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 
 ---
 
-## 📖 目录
-
-- [功能特性](#功能特性)
-- [环境要求](#环境要求)
-- [快速开始](#快速开始)
-- [使用方式](#使用方式)
-- [许可证](#许可证)
-- [第三方组件](#第三方组件)
-- [致谢](#致谢)
-- [作者](#作者)
-
----
-
 ## ✨ 功能特性
 
-- **多游戏支持** — 兼容 Minecraft、Source 及 BattlEye 引擎系列游戏（L4D2、CS:GO、TF2 等）
+- **多游戏支持** — 兼容 Minecraft（Java）、Source（L4D2、CS:GO、TF2 等）及 BattlEye（DayZ、ARMA、PUBG 等）引擎
 - **交互式终端** — 类 REPL 的命令行交互体验，在 `>>>` 提示符后直接输入指令
 - **命令历史** — 方向键（↑/↓）翻阅历史命令，当前会话内有效
 - **连通性检测** — 连接前自动测试服务器可达性，快速定位问题
+- **快速连接** — 首次输入连接信息后自动保存至 `fastconnect.json`，下次启动可选择一键连接
+- **定时任务** — 支持三种定时模式：间隔秒数、每周定时、每月定时，配置存于 `tasks.json`
 
 ---
 
@@ -38,7 +27,7 @@
 
 ## 🚀 快速开始
 
-### 1. 安装依赖(使用打包好的exe可跳过)
+### 1. 安装依赖（使用打包好的 exe 可跳过）
 
 ```bash
 pip install rcon
@@ -49,7 +38,7 @@ pip install pyreadline3  # 仅 Windows 需要，提供方向键历史记录功�
 
 ### 2. 开启服务器 RCON
 
-#### Minecraft
+#### Minecraft（Java）
 
 编辑 `server.properties`：
 
@@ -59,7 +48,7 @@ rcon.password=你的密码
 rcon.port=你的端口
 ```
 
-#### Left 4 Dead 2 / Source 引擎游戏
+#### Source 引擎游戏（L4D2 / CS:GO / TF2 / GMOD）
 
 编辑 `server.cfg`（或启动参数）：
 
@@ -68,7 +57,17 @@ rcon_password "你的密码"
 rcon_address "0.0.0.0:27015"  // 可选，绑定地址
 ```
 
-> ⚠️ **安全提示**：RCON 密码请使用强密码
+#### BattlEye 游戏（DayZ / ARMA 2/3 / PUBG）
+
+编辑 `BattlEye/beserver_x64.cfg`（或对应平台的配置文件）：
+
+```cfg
+RConPassword 你的密码
+RConPort 你的端口
+RConIP 0.0.0.0
+```
+
+> ⚠️ **安全提示**：RCON 密码请使用强密码，避免明文暴露在公共仓库中。
 
 ### 3. 下载 EXE 版本
 
@@ -77,6 +76,10 @@ rcon_address "0.0.0.0:27015"  // 可选，绑定地址
 ---
 
 ## 🖥️ 使用方式
+
+### 启动与快速连接
+
+首次启动会提示输入服务器类型、IP、端口和密码，输入后自动保存至 `fastconnect.json`。下次启动时程序会检测到该文件并询问是否使用上次连接信息。
 
 ### 交互式命令
 
@@ -94,6 +97,50 @@ rcon_address "0.0.0.0:27015"  // 可选，绑定地址
 - **↓（下方向键）**：翻阅下一条命令
 
 > 注意：历史记录仅在当前会话内有效，关闭程序后不保留。
+
+### 退出程序
+
+在 `>>>` 提示符后输入 `leave` 即可退出，或直接关闭窗口。
+
+---
+
+## 📅 定时任务
+
+定时任务配置文件为 `tasks.json`，支持三种模式：
+
+| 模式 | 关键字段 | 说明 |
+|------|----------|------|
+| 间隔秒数 | `interval`（秒） | 每隔 N 秒执行一次命令 |
+| 每周定时 | `type: "weekly"`、`weekday`、`time` | 每周指定星期几的指定时间执行 |
+| 每月定时 | `type: "monthly"`、`day`、`time` | 每月指定日期的指定时间执行 |
+
+**示例 `tasks.json`**：
+
+```json
+[
+  {
+    "name": "每5秒查询玩家",
+    "command": "list",
+    "interval": 5
+  },
+  {
+    "name": "每周一早安",
+    "command": "say 周一早安",
+    "type": "weekly",
+    "weekday": "monday",
+    "time": "08:00"
+  },
+  {
+    "name": "每月15号中午广播",
+    "command": "say 月中快乐",
+    "type": "monthly",
+    "day": 15,
+    "time": "12:00"
+  }
+]
+```
+
+> 若 `tasks.json` 不存在，程序会自动生成默认配置并禁用定时任务，重启后生效。
 
 ---
 
@@ -157,7 +204,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 - GitHub：[@Tsukigakireine](https://github.com/Tsukigakireine)
 - 联系方式：QQ 1794499532
-- 邮箱: 1794499532@qq.com
+- 邮箱：1794499532@qq.com
 
 ---
 
