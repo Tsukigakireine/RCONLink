@@ -14,27 +14,25 @@
 - **连通性检测** — 连接前自动测试服务器可达性，快速定位问题
 - **快速连接** — 首次输入连接信息后自动保存至 `fastconnect.json`，下次启动可选择一键连接
 - **定时任务** — 支持三种定时模式：间隔秒数、每周定时、每月定时，配置存于 `tasks.json`
+- **日志记录** — 自动记录所有控制台输出至 `logs/` 文件夹，按时间命名，便于追溯和排错
 
 ---
 
 ## 🔧 环境要求
 
 - **操作系统**：Windows
-- **Python**：>= 3.10（因核心依赖 `rcon` 模块要求）
+- **Python**：>= 3.10
 - **网络**：能访问目标服务器的 RCON 端口（TCP）
 
 ---
 
 ## 🚀 快速开始
 
-### 1. 安装依赖（使用打包好的 exe 可跳过）
+### 1. 安装依赖
 
 ```bash
-pip install rcon
-pip install mcrcon
-pip install pyreadline3  # 仅 Windows 需要，提供方向键历史记录功能
+pip install rcon mcrcon rcon-battleye loguru pyreadline3
 ```
-
 
 ### 2. 开启服务器 RCON
 
@@ -50,16 +48,16 @@ rcon.port=你的端口
 
 #### Source 引擎游戏（L4D2 / CS:GO / TF2 / GMOD）
 
-编辑 `server.cfg`（或启动参数）：
+编辑 `server.cfg`：
 
 ```cfg
 rcon_password "你的密码"
-rcon_address "0.0.0.0:27015"  // 可选，绑定地址
+rcon_address "0.0.0.0:27015"
 ```
 
 #### BattlEye 游戏（DayZ / ARMA 2/3 / PUBG）
 
-编辑 `BattlEye/beserver_x64.cfg`（或对应平台的配置文件）：
+编辑 `BattlEye/beserver_x64.cfg`：
 
 ```cfg
 RConPassword 你的密码
@@ -96,7 +94,7 @@ RConIP 0.0.0.0
 - **↑（上方向键）**：翻阅上一条命令
 - **↓（下方向键）**：翻阅下一条命令
 
-> 注意：历史记录仅在当前会话内有效，关闭程序后不保留。
+> 历史记录仅在当前会话内有效，关闭程序后不保留。
 
 ### 退出程序
 
@@ -144,57 +142,29 @@ RConIP 0.0.0.0
 
 ---
 
+## 📝 日志
+
+程序运行时会自动在 `logs/` 文件夹下生成以当前时间命名的 `.log` 文件（如 `2026-08-21_14-30-00.log`），记录所有控制台输出，包括命令执行、返回结果、错误信息及定时任务执行情况。日志文件采用 UTF-8 编码。
+
+---
+
 ## 📄 许可证
 
 本项目采用 [GNU 通用公共许可证 v3.0](LICENSE)，详见 [LICENSE](LICENSE) 文件。
-
-```text
-GNU GENERAL PUBLIC LICENSE
-Version 3, 29 June 2007
-
-Copyright (c) 2026 Tsukigakireine
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-```
 
 ---
 
 ## 📦 第三方组件
 
-| 组件 | 版本 | 许可证 | 来源 |
-|------|------|--------|------|
-| [rcon](https://pypi.org/project/rcon/) | >= 2.4.9 | GPLv3 | https://pypi.org/project/rcon/ |
-| [mcrcon](https://pypi.org/project/mcrcon/) | 最新 | MIT | https://pypi.org/project/mcrcon/ |
-| [pyreadline3](https://pypi.org/project/pyreadline3/) | 最新 | BSD | https://pypi.org/project/pyreadline3/ |
-
-### 依赖说明
-
-- **rcon** — 核心 RCON 客户端库，提供 Source RCON 和 BattlEye RCon 协议支持，许可证与本项目一致（GPLv3）
-- **mcrcon** — 备选/兼容用 RCON 库，MIT 许可证，与 GPLv3 兼容
-- **pyreadline3** — 仅 Windows 平台需要，提供交互式命令行体验（方向键历史、行编辑），BSD 3-Clause 许可证
+| 组件 | 许可证 | 来源 |
+|------|--------|------|
+| [rcon](https://pypi.org/project/rcon/) | GPLv3 | https://pypi.org/project/rcon/ |
+| [mcrcon](https://pypi.org/project/mcrcon/) | MIT | https://pypi.org/project/mcrcon/ |
+| [rcon-battleye](https://pypi.org/project/rcon-battleye/) | MIT | https://pypi.org/project/rcon-battleye/ |
+| [loguru](https://pypi.org/project/loguru/) | MIT | https://pypi.org/project/loguru/ |
+| [pyreadline3](https://pypi.org/project/pyreadline3/) | BSD | https://pypi.org/project/pyreadline3/ |
 
 详细许可证文本请参见 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)。
-
----
-
-## 🙏 致谢
-
-感谢以下开源项目的作者和贡献者：
-
-- **[rcon](https://github.com/conqp/rcon)** — Richard Neumann 开发的 RCON 协议库（GPLv3）
-- **[mcrcon](https://github.com/Tiiffi/mcrcon)** — Tiiffi 等人开发的 RCON 协议库（MIT）
-- **[pyreadline3](https://github.com/pyreadline3/pyreadline3)** — Windows 下 Python 交互式输入支持（BSD）
 
 ---
 
